@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temperature Converter</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="converterBody">
+
+<div class="main-container">
+
+    
+    <div class="container">
+
+        <h1>🌡️ Temperature Converter</h1>
+
+        <input
+            type="number"
+            id="temp"
+            placeholder="🌡️Enter Temperature">
+
+        <select id="unit">
+            <option value="cToF">
+                Celsius → Fahrenheit
+            </option>
+
+            <option value="fToC">
+                Fahrenheit → Celsius
+            </option>
+        </select>
+
+        <button onclick="convertTemp()">
+            Convert
+        </button>
+
+        <div id="result"></div>
+
+        <div id="category"></div>
+
+    </div>
+
+</div>
+
+<div id="emojiContainer"></div>
+<script>
+function convertTemp(){
+
+    let temp = Number(document.getElementById("temp").value);
+    let unit = document.getElementById("unit").value;
+
+    let result = document.getElementById("result");
+    let category = document.getElementById("category");
+
+    if(isNaN(temp)){
+        result.innerHTML = "⚠️ Please enter temperature";
+        category.innerHTML = "";
+        return;
+    }
+
+    let celsius;
+
+    if(unit === "cToF"){
+        let f = (temp * 9/5) + 32;
+        result.innerHTML = `${temp} °C = ${f.toFixed(2)} °F`;
+        celsius = temp;
+    }
+    else{
+        let c = (temp - 32) * 5/9;
+        result.innerHTML = `${temp} °F = ${c.toFixed(2)} °C`;
+        celsius = c;
+    }
+
+    if(celsius < 10){
+
+        category.innerHTML = "❄️ Cold Weather";
+
+        document.body.style.background =
+        "linear-gradient(135deg,#00c6ff,#0072ff)";
+
+        createEmojis(
+        ["❄️","🧊","🌨️","❄️"],
+        "cold"
+        );
+    }
+
+    else if(celsius < 25){
+
+        category.innerHTML = "🌤 Pleasant Weather";
+
+        document.body.style.background =
+        "linear-gradient(135deg,#56ab2f,#a8e063)";
+
+        createEmojis(
+        ["🍃","🍃"],
+        "pleasant"
+        );
+    }
+
+    else if(celsius < 35){
+
+        category.innerHTML = "☀️ Warm Weather";
+
+        document.body.style.background =
+        "linear-gradient(135deg,#f7971e,#ffd200)";
+
+        createEmojis(
+        ["☀️","🌞","✨","☀️"],
+        "warm"
+        );
+    }
+
+    else{
+
+        category.innerHTML = "🔥 Hot Weather";
+
+        document.body.style.background =
+        "linear-gradient(135deg,#ff512f,#dd2476)";
+
+        createEmojis(
+        ["🔥","🔥","🔥"],
+        "hot"
+        );
+    }
+}
+
+function createEmojis(list,type){
+
+    const container =
+    document.getElementById("emojiContainer");
+
+    container.innerHTML = "";
+
+    for(let i=0;i<200;i++){
+
+        const emoji =
+        document.createElement("div");
+
+        emoji.classList.add("floatingEmoji");
+
+        emoji.innerHTML =
+        list[Math.floor(Math.random()*list.length)];
+
+        emoji.style.left =
+        Math.random()*95 + "vw";
+
+        emoji.style.fontSize =
+        (20 + Math.random()*15) + "px";
+
+        emoji.style.animationDelay =
+        Math.random()*4 + "s";
+
+        if(type==="cold"){
+
+            emoji.style.top =
+            (-200 - Math.random()*600) + "px";
+
+            emoji.classList.add("coldEmoji");
+        }
+
+        else if(type==="hot"){
+
+            emoji.style.bottom =
+            (-200 - Math.random()*500) + "px";
+
+            emoji.classList.add("hotEmoji");
+        }
+
+        else if(type==="pleasant"){
+
+            emoji.style.top =
+            Math.random()*500 + "px";
+
+            emoji.classList.add("pleasantEmoji");
+        }
+
+        else{
+
+            emoji.style.left =
+            Math.random()*90 + "vw";
+
+            emoji.style.bottom =
+            (-100 - Math.random()*400) + "px";
+
+            emoji.classList.add("warmEmoji");
+        }
+
+        container.appendChild(emoji);
+    }
+
+    setTimeout(()=>{
+        container.innerHTML="";
+    },20000);
+}
+</script>
+</body>
+</html>
